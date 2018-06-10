@@ -56,7 +56,10 @@ def initCreateJson():
 			"average cost" : cost,
 			"current price" : "x",
 			"percent change" : "x",
-			
+			"notification" :"false",
+			"sell price": "x",
+			"sell percent" : "x"
+
 			})
 
 	with open('data.json', 'w') as outfile:
@@ -68,7 +71,21 @@ def loadJson():
 		data = json.load(infile)
 	return data
 
-def main():
+def menu():
+	print("Welcome to the menu.")
+	print(
+		"1)Print stock information. \n" + 
+		"2)add a stock. \n" +
+		"3)remove a stock \n" +
+		"4)set notifications"
+		 )
+	print()
+	choice = input("Please select an option.")
+
+	
+
+
+def main(): 
 	#data = createJson()
 	# addStocks(data, 'tsla', '90', '100')
 	# addStocks(data, 'spyerdo','100', '12312')
@@ -80,6 +97,8 @@ def main():
 	if(os.path.isfile("data.json")== False):
 		initCreateJson()
 	data = loadJson() 
-	print(json.dumps(data,indent=4, sort_keys=True))
-	multifileTest.sayHello()
+	menu()
+
+	#print(json.dumps(data,indent=4, sort_keys=True))
+	#multifileTest.sayHello()
 if __name__ == "__main__": main()
