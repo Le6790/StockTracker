@@ -1,1 +1,1 @@
-{"stocks": [{"name": "aapl", "quantity": "100", "current price": "191.70", "bought average": "190.00"}, {"name": "tsla", "quantity": "100", "current price": "90", "bought average": "90"}]}
+{"user": [{"username": "Kent", "age": "21"}], "stocks": [{"name": "aapl", "quantity": "18", "average cost": "123"}]}

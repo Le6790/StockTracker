@@ -1,10 +1,14 @@
 import time
 import csv
 import json
+import os.path
+import multifileTest
 #using csv to save my stock data
 #or json?
 #lets try both
 #will record stock bought, price, quantity, average price, etc
+
+
 def addStocks(data, name, price, quantity):
 	data["stocks"].append({
 		'name': name,
@@ -17,7 +21,7 @@ def addStocks(data, name, price, quantity):
 		json.dump(data, outfile)
 
 	jsonData = json.dumps(data)
-	print(jsonData)
+	#print(jsonData)
 
 def printJson():
 	with open('data.json') as json_file:
@@ -28,20 +32,54 @@ def printJson():
 			print('current Price: '+ p['current price'])
 
 
-def main():
+def initCreateJson():
 	data = {}
+	username = input("Enter your name: ")
+	age = input("Enter your age: ")
+	data["user"] = []
 	data["stocks"] = []
-	data["stocks"].append({
-		'name': 'aapl',
-		'current price': '191.70',
-		'quantity' : '100',
-		'bought average' : '190.00' 
+	data["user"].append({
+		"username" : username,
+		"age" : age
 		})
+	print("Please enter in some stocks you want to track below.")
+	numberofStocks = input("how many stocks do you want to add: ")
+
+	for i in range(int(numberofStocks)):
+		name = input("Enter the name of the stock: ")
+		quantity = input("Enter the amount of " + name + " you bought: ")
+		cost = input("Enter the cost of the " + name + ": ")
+
+		data["stocks"].append({
+			"name" : name,
+			"quantity" : quantity,
+			"average cost" : cost,
+			"current price" : "x",
+			"percent change" : "x",
+			
+			})
 
 	with open('data.json', 'w') as outfile:
 		json.dump(data, outfile)
-	addStocks(data, 'tsla', '90', '100')
 
-	printJson()
 
+def loadJson():
+	with open('data.json','r') as infile:
+		data = json.load(infile)
+	return data
+
+def main():
+	#data = createJson()
+	# addStocks(data, 'tsla', '90', '100')
+	# addStocks(data, 'spyerdo','100', '12312')
+	# printJson()
+	
+	print("Welcome to Kent's Stock Portfolio Tracker.")
+	
+	#check to see if data file exists
+	if(os.path.isfile("data.json")== False):
+		initCreateJson()
+	data = loadJson() 
+	print(json.dumps(data,indent=4, sort_keys=True))
+	multifileTest.sayHello()
 if __name__ == "__main__": main()
