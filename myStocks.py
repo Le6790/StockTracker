@@ -71,7 +71,7 @@ def loadJson():
 		data = json.load(infile)
 	return data
 
-def menu():
+def menu(data):
 	print("Welcome to the menu.")
 	print(
 		"1)Print stock information. \n" + 
@@ -81,9 +81,11 @@ def menu():
 		 )
 	print()
 	choice = input("Please select an option.")
+	if(choice == 1):
+		stockInfo(data)
 
-	
-
+def stockInfo(data):
+	print("My stocks information.")
 
 def main(): 
 	#data = createJson()
@@ -97,7 +99,7 @@ def main():
 	if(os.path.isfile("data.json")== False):
 		initCreateJson()
 	data = loadJson() 
-	menu()
+	menu(data)
 
 	#print(json.dumps(data,indent=4, sort_keys=True))
 	#multifileTest.sayHello()
