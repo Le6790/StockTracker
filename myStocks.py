@@ -3,18 +3,29 @@ import csv
 import json
 import os.path
 import multifileTest
-#using csv to save my stock data
-#or json?
-#lets try both
+#TODO: clean up functions
+#TODO: comment each function
+#TODO: Create a list of functionalities that this program will achieve
+#TODO: Seperate user and API data into two different lists
+#TODO: Create another python file that will handle emailing/texting alerts
+#TODO: Include 5 day moving average prediction
 #will record stock bought, price, quantity, average price, etc
 
-
+#addStocks will allow users to add the stock they are adding to their portfolio
+#This information includes the name of the stock, the price they bought it at,
+#The quantity they bought,
+#
 def addStocks(data, name, price, quantity):
 	data["stocks"].append({
-		'name': name,
-		'current price': price,
-		'quantity' : quantity,
-		'bought average' : price 
+		"name" : name, #name of the stock
+		"quantity" : quantity, #amount of shares you are buying
+		"bought price" : cost, #The price of a single share
+		"current price" : "x", #AlphaVantage data - current price of a single share 
+		"percent change" : "x", #alphaVantage data calculation - percent change from user data ((current price - bought price  )/bought price)
+		"notification" :"false", # allow the program to send email/ text alerts to user
+		"watch price": "x", #watch price indicates the price to notify and sell at.
+		"watch percent" : "x" #watch percent indicates the positive percent to notify and sell at
+		#TODO: maybe include volume as well
 		})
 
 	with open('data.json', 'w') as outfile:
@@ -22,6 +33,7 @@ def addStocks(data, name, price, quantity):
 
 	jsonData = json.dumps(data)
 	#print(jsonData)
+	return data
 
 def printJson():
 	with open('data.json') as json_file:
@@ -42,28 +54,22 @@ def initCreateJson():
 		"username" : username,
 		"age" : age
 		})
+
+	with open('data.json', 'w') as outfile:
+		json.dump(data, outfile)
+	
 	print("Please enter in some stocks you want to track below.")
 	numberofStocks = input("how many stocks do you want to add: ")
 
 	for i in range(int(numberofStocks)):
 		name = input("Enter the name of the stock: ")
 		quantity = input("Enter the amount of " + name + " you bought: ")
-		cost = input("Enter the cost of the " + name + ": ")
+		price = input("Enter the cost of 1 share of " + name + ": ")
 
-		data["stocks"].append({
-			"name" : name,
-			"quantity" : quantity,
-			"average cost" : cost,
-			"current price" : "x",
-			"percent change" : "x",
-			"notification" :"false",
-			"sell price": "x",
-			"sell percent" : "x"
+	addStocks(data,price,name, quantity) #use the function defined to add stocks to data.json file
+		
 
-			})
-
-	with open('data.json', 'w') as outfile:
-		json.dump(data, outfile)
+	
 
 
 def loadJson():
