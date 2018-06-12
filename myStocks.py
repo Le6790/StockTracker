@@ -9,6 +9,8 @@ import multifileTest
 #TODO: Seperate user and API data into two different lists
 #TODO: Create another python file that will handle emailing/texting alerts
 #TODO: Include 5 day moving average prediction
+
+#TODO: ADD redudency checks to data inputs
 #will record stock bought, price, quantity, average price, etc
 
 #addStocks will allow users to add the stock they are adding to their portfolio
@@ -19,7 +21,7 @@ def addStocks(data, name, price, quantity):
 	data["stocks"].append({
 		"name" : name, #name of the stock
 		"quantity" : quantity, #amount of shares you are buying
-		"bought price" : cost, #The price of a single share
+		"bought price" : price, #The price of a single share
 		"current price" : "x", #AlphaVantage data - current price of a single share 
 		"percent change" : "x", #alphaVantage data calculation - percent change from user data ((current price - bought price  )/bought price)
 		"notification" :"false", # allow the program to send email/ text alerts to user
@@ -65,8 +67,7 @@ def initCreateJson():
 		name = input("Enter the name of the stock: ")
 		quantity = input("Enter the amount of " + name + " you bought: ")
 		price = input("Enter the cost of 1 share of " + name + ": ")
-
-	addStocks(data,price,name, quantity) #use the function defined to add stocks to data.json file
+		addStocks(data,name,price, quantity) #use the function defined to add stocks to data.json file
 		
 
 	
