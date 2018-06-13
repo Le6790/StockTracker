@@ -2,10 +2,10 @@ import time
 def getCurrentTime():
     localtime = time.localtime(time.time())
     year = str(localtime[0])
-    month = str(localtime[1])
+    month = '%02d' % localtime[1]
     day = str(localtime[2])
     hourEST = str(localtime[3]+2) # from MST to EST
-    if (int(hourEST) > 24):
+    if (int(hourEST) > 2):
         hourEST = str(int(hourEST) % 24)
     
     minute = str(localtime[4])
@@ -23,8 +23,19 @@ def getCurrentTime():
 
         currentTime = '%s-%s-%s %s:%s:%s' %(year, month, day, hourEST, minute, second)
         timeList.append(currentTime)
-    print(currentTime)
+    #print(currentTime)
     #print(timeList)
+
+    return currentTime
+
+def getCurrentDate():
+    localtime = time.localtime(time.time())
+    year = str(localtime[0])
+    month = '%02d' % localtime[1]
+    day = str(localtime[2])
+
+    currentDate = "%s-%s-%s" %(year, month, day)
+    return currentDate
 
 def isMarketOpen():
     localtime = time.localtime(time.time())
@@ -33,7 +44,7 @@ def isMarketOpen():
         hourEST = str(int(hourEST) % 24)
     minute = str(localtime[4])
     print("EST hour is: " + hourEST +":"+ minute)
-    if (int(hourEST) >= 9 and int(hourEST) < 4):
+    if (int(hourEST) >= 9 and int(hourEST) < 16):
         if (int(hourEST == 9) and (int(minute) <=30)):
             print("Market is not open. Please check again at 9:30")
             return False

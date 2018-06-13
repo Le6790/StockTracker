@@ -3,6 +3,8 @@ import csv
 import json
 import os.path
 import multifileTest
+import getTime
+import stockTracker
 #TODO: clean up functions
 #TODO: comment each function
 #TODO: Create a list of functionalities that this program will achieve
@@ -13,29 +15,11 @@ import multifileTest
 #TODO: ADD redudency checks to data inputs
 #will record stock bought, price, quantity, average price, etc
 
-#addStocks will allow users to add the stock they are adding to their portfolio
-#This information includes the name of the stock, the price they bought it at,
-#The quantity they bought,
-#
-def addStocks(data, name, price, quantity):
-	data["stocks"].append({
-		"name" : name, #name of the stock
-		"quantity" : quantity, #amount of shares you are buying
-		"bought price" : price, #The price of a single share
-		"current price" : "x", #AlphaVantage data - current price of a single share 
-		"percent change" : "x", #alphaVantage data calculation - percent change from user data ((current price - bought price  )/bought price)
-		"notification" :"false", # allow the program to send email/ text alerts to user
-		"watch price": "x", #watch price indicates the price to notify and sell at.
-		"watch percent" : "x" #watch percent indicates the positive percent to notify and sell at
-		#TODO: maybe include volume as well
-		})
 
-	with open('data.json', 'w') as outfile:
-		json.dump(data, outfile)
 
-	jsonData = json.dumps(data)
-	#print(jsonData)
-	return data
+
+#main file
+
 
 def printJson():
 	with open('data.json') as json_file:
@@ -57,8 +41,7 @@ def initCreateJson():
 		"age" : age
 		})
 
-	with open('data.json', 'w') as outfile:
-		json.dump(data, outfile)
+	stockTracker.saveJson(data)
 	
 	print("Please enter in some stocks you want to track below.")
 	numberofStocks = input("how many stocks do you want to add: ")
@@ -67,16 +50,13 @@ def initCreateJson():
 		name = input("Enter the name of the stock: ")
 		quantity = input("Enter the amount of " + name + " you bought: ")
 		price = input("Enter the cost of 1 share of " + name + ": ")
-		addStocks(data,name,price, quantity) #use the function defined to add stocks to data.json file
+		stockTracker.addStocks(data,name,price, quantity) #use the function defined to add stocks to data.json file
 		
 
 	
 
 
-def loadJson():
-	with open('data.json','r') as infile:
-		data = json.load(infile)
-	return data
+
 
 def menu(data):
 	print("Welcome to the menu.")
@@ -88,11 +68,11 @@ def menu(data):
 		 )
 	print()
 	choice = input("Please select an option.")
-	if(choice == 1):
+	if(choice == "1"):
 		stockInfo(data)
 
 def stockInfo(data):
-	print("My stocks information.")
+	stockTracker.updateStocks(data)
 
 def main(): 
 	#data = createJson()
@@ -101,11 +81,17 @@ def main():
 	# printJson()
 	
 	print("Welcome to Kent's Stock Portfolio Tracker.")
-	
+	if(getTime.isMarketOpen() == True): #TODO: Delete
+		print("Looks like the market is open right now!")
+		print(getTime.getCurrentTime())
+	else:
+		print("The market is currently closed.")
+		print(getTime.getCurrentTime())
+
 	#check to see if data file exists
 	if(os.path.isfile("data.json")== False):
 		initCreateJson()
-	data = loadJson() 
+	data = stockTracker.loadJson() 
 	menu(data)
 
 	#print(json.dumps(data,indent=4, sort_keys=True))
