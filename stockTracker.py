@@ -1,14 +1,21 @@
 import json
 import getTime
 import alphaStocks as alpha
+
+#load the json file in
 def loadJson():
 	with open('data.json','r') as infile:
 		data = json.load(infile)
 	return data
 
+#-----------------------------------------------
+
+#save the json file
 def saveJson(data):
 	with open('data.json', 'w') as outfile:
 		json.dump(data, outfile)
+
+#-------------------------------------------------
 
 #addStocks will allow users to add the stock they are adding to their portfolio
 #This information includes the name of the stock, the price they bought it at,
