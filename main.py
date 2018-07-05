@@ -2,7 +2,7 @@ import time
 import csv
 import json
 import os.path
-import multifileTest
+from threading import Thread
 import getTime
 import stockTracker
 #TODO: clean up functions
@@ -14,8 +14,6 @@ import stockTracker
 
 #TODO: ADD redudency checks to data inputs
 #will record stock bought, price, quantity, average price, etc
-
-
 
 
 #main file
@@ -50,11 +48,8 @@ def initCreateJson():
 		name = input("Enter the name of the stock: ")
 		quantity = input("Enter the amount of " + name + " you bought: ")
 		price = input("Enter the cost of 1 share of " + name + ": ")
-		stockTracker.addStocks(data,name,price, quantity) #use the function defined to add stocks to data.json file
+		stockTracker.addStocks(data) #use the function defined to add stocks to data.json file
 		
-
-	
-
 
 
 
@@ -64,22 +59,30 @@ def menu(data):
 		"1)Print stock information. \n" + 
 		"2)add a stock. \n" +
 		"3)remove a stock \n" +
-		"4)set notifications"
+		"4)set notifications\n" + 
+		"q) quit"
 		 )
 	print()
 	choice = input("Please select an option.")
+	if(choice == "q"):
+		exit()
 	if(choice == "1"):
 		stockInfo(data)
+	if(choice == "2"):
+		stockTracker.addStocks(data)
+	if(choice == "3"):
+		stockTracker.deleteStocks(data)
 
 def stockInfo(data):
-	stockTracker.updateStocks(data)
+	#stockTracker.updateStocks(data)
+	stockTracker.printStockData(data)
 
 def main(): 
 	#data = createJson()
 	# addStocks(data, 'tsla', '90', '100')
 	# addStocks(data, 'spyerdo','100', '12312')
 	# printJson()
-	
+
 	print("Welcome to Kent's Stock Portfolio Tracker.")
 	if(getTime.isMarketOpen() == True): #TODO: Delete
 		print("Looks like the market is open right now!")
@@ -92,7 +95,13 @@ def main():
 	if(os.path.isfile("data.json")== False):
 		initCreateJson()
 	data = stockTracker.loadJson() 
-	menu(data)
+
+
+	while (1):
+		update=Thread(target=stockTracker.updateStocks,args=(data,))
+		update.start()
+		if update.isAlive():
+			menu(data)
 
 	#print(json.dumps(data,indent=4, sort_keys=True))
 	#multifileTest.sayHello()

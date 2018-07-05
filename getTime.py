@@ -55,9 +55,9 @@ def isMarketOpen():
         if (int(hourEST == 9) and (int(minute) <=30)):
             print("Market is not open. Please check again at 9:30")
             return False
-        print("Market is open.")
+        #print("Market is open.")
         return True
-    print("market is not open.")
+    #print("market is not open.")
     return False
 
 
