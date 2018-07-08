@@ -1,4 +1,4 @@
-# Command-line/email Stock Tracker
+# Command-line/Email Stock Tracker
 
 This project will track stock prices in a given portfolio. 
 
